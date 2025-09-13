@@ -1,24 +1,20 @@
-import { DarkTheme, DefaultTheme, ThemeProvider } from '@react-navigation/native';
-import { Stack } from 'expo-router';
-import { StatusBar } from 'expo-status-bar';
-import 'react-native-reanimated';
+import { Slot, Stack } from "expo-router";
+import { ClerkProvider, ClerkLoaded } from "@clerk/clerk-expo";
 
-import { useColorScheme } from '@/hooks/use-color-scheme';
+const clerkPublishableKey = process.env.EXPO_PUBLIC_CLERK_PUBLISHABLE_KEY
 
-export const unstable_settings = {
-  anchor: '(tabs)',
-};
+const InitialLayout = () => {
+  return (
+    <Slot />
+  )
+}
 
 export default function RootLayout() {
-  const colorScheme = useColorScheme();
-
   return (
-    <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
+    <ClerkProvider publishableKey={clerkPublishableKey!}>
       <Stack>
-        <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-        <Stack.Screen name="modal" options={{ presentation: 'modal', title: 'Modal' }} />
+        <Stack.Screen name="index" />
       </Stack>
-      <StatusBar style="auto" />
-    </ThemeProvider>
-  );
+    </ClerkProvider>
+  )
 }
